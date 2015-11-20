@@ -1,0 +1,2 @@
+# Run an AIDE system check every morning at 0500 local time.
+0 5 * * * /usr/sbin/aide --check

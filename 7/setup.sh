@@ -18,13 +18,9 @@ yum update -y
 rmdir /var/tmp
 ln -s /tmp /var/tmp
 
-# Postfix sends mail.
-# AIDE monitors the file system.
-# Logwatch parses the logfiles and mails you about anomalies.
-apt-get install -y logwatch
-
-# These are always good to have around.
+# Install some basic packages that might not be in the default install.
 yum install -y haveged ntp lynx sslscan psmisc sysstat audit postfix aide
+yum install -y logwatch
 
 # Install all the files.  All of them.
 cp -rv * /etc
@@ -43,12 +39,12 @@ systemctl enable ntpd
 systemctl start auditd 
 systemctl enable auditd
 
-# Stop and disable a bunch of services.
+# Stop and disable services.
 
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
-aide.wrapper --init
-cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+aide --init
+cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 
 # Fin.
 exit 0
