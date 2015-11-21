@@ -41,10 +41,17 @@ systemctl start auditd
 systemctl enable auditd
 
 # Stop and disable services.
+systemctl mask NetworkManager
+systemctl stop NetworkManager
+systemctl disable NetworkManager
 
 # Remove packages that aren't needed.  Most of these probably aren't installed
 # anyway but there's no way of knowing these days.
 yum erase -y setroubleshoot mcstrans telnet-server telnet rsh-server rsh
+yum erase -y ypbind ypserv tftp-server tftp talk-server talk xinetd
+
+# Ensure that the default runlevel is not "X desktop".
+systemctl set-default multi-user.target
 
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."

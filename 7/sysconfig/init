@@ -22,3 +22,6 @@ SINGLE=/sbin/sulogin
 # Ensure nobody can interactively interfere with the boot process.
 PROMPT=no
 
+# Lock down daemons' file umasks.
+umask 027
+
