@@ -42,8 +42,9 @@ systemctl enable auditd
 
 # Stop and disable services.
 
-# Remove packages that aren't needed.
-yum erase -y setroubleshoot mcstrans
+# Remove packages that aren't needed.  Most of these probably aren't installed
+# anyway but there's no way of knowing these days.
+yum erase -y setroubleshoot mcstrans telnet-server telnet rsh-server rsh
 
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
