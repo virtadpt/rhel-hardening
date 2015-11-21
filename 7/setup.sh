@@ -27,6 +27,7 @@ cp -rv * /etc
 
 # Fix file permissions.
 chmod 0600 /etc/aide.conf
+chmod 0600 /boot/grub/grub.conf
 
 # Just not this one.
 rm -f /etc/setup.sh
@@ -40,6 +41,9 @@ systemctl start auditd
 systemctl enable auditd
 
 # Stop and disable services.
+
+# Remove packages that aren't needed.
+yum erase -y setroubleshoot mcstrans
 
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
