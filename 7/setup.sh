@@ -20,7 +20,7 @@ ln -s /tmp /var/tmp
 
 # Install some basic packages that might not be in the default install.
 yum install -y haveged ntp lynx sslscan psmisc sysstat audit postfix aide
-yum install -y logwatch rsyslog
+yum install -y logwatch rsyslog tcp_wrappers
 
 # Install all the files.  All of them.
 cp -rv * /etc
@@ -41,6 +41,10 @@ systemctl start auditd
 systemctl enable auditd
 systemctl start rsyslog
 systemctl enable rsyslog
+systemctl start iptables
+systemctl enable iptables
+systemctl start ip6tables
+systemctl enable ip6tables
 
 # Stop and disable services.
 systemctl mask NetworkManager
