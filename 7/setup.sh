@@ -65,6 +65,13 @@ yum erase -y ypbind ypserv tftp-server tftp talk-server talk xinetd
 # Ensure that the default runlevel is not "X desktop".
 systemctl set-default multi-user.target
 
+# Generate audit rules for every setuid and setgid executable on the system.
+# It's easiest to do it now rather than trying to second guess it in a static
+# audit.rules file.
+find / -xdev \( -perm -4000 -o -perm -2000 \) -type f | \
+    awk '{print "-a always,exit -F path=" $1 " -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged"}' >> /etc/audit/audit.rules
+echo "" >> /etc/audit/audit.rules
+
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
 aide --init
