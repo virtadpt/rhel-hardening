@@ -45,6 +45,8 @@ systemctl start iptables
 systemctl enable iptables
 systemctl start ip6tables
 systemctl enable ip6tables
+systemctl start auditd
+systemctl enable auditd
 
 # Stop and disable services.
 systemctl mask NetworkManager
