@@ -18,6 +18,9 @@ yum update -y
 rmdir /var/tmp
 ln -s /tmp /var/tmp
 
+# Create a directory for sudo to log to.
+mkdir -p /var/log/sudo-io
+
 # Install some basic packages that might not be in the default install.
 yum install -y haveged ntp lynx sslscan psmisc sysstat audit postfix aide
 yum install -y logwatch rsyslog tcp_wrappers
@@ -28,6 +31,7 @@ cp -rv * /etc
 # Fix file permissions.
 chmod 0600 /etc/aide.conf
 chmod 0600 /boot/grub/grub.conf
+chmod 0750 /var/log/sudo-io
 
 # Just not this one.
 rm -f /etc/setup.sh
