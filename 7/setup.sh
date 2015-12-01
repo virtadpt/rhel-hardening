@@ -73,6 +73,11 @@ find / -xdev \( -perm -4000 -o -perm -2000 \) -type f | \
     awk '{print "-a always,exit -F path=" $1 " -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged"}' >> /etc/audit/audit.rules
 echo "" >> /etc/audit/audit.rules
 
+# Make the audit rules configuration immutable.
+echo "# Making auditing configuration immutable." >> /etc/audit/audit.rules
+echo "-e 2" >> /etc/audit/audit.rules
+echo "" >> /etc/audit/audit.rules
+
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
 aide --init

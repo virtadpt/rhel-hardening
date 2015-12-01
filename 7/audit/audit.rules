@@ -54,3 +54,20 @@
 -a always,exit -F arch=b64 -S mount -F auid>=500 -F auid!=4294967295 -k mounts
 -a always,exit -F arch=b32 -S mount -F auid>=500 -F auid!=4294967295 -k mounts
 
+# Audit file deletion.
+-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=500 -F auid!=4294967295 -k delete
+-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=500 -F auid!=4294967295 -k delete
+
+# Note changes to users' scope that elevate privileges.
+-w /etc/sudoers -p wa -k scope
+
+# Monitor sudo logs.
+-w /var/log/sudo.log -p wa -k actions
+-w /var/log/sudo-io/ -p wa -k actions
+
+# Audit loading and unloading of kernel modules.
+-w /sbin/insmod -p x -k modules
+-w /sbin/rmmod -p x -k modules
+-w /sbin/modprobe -p x -k modules
+-a always,exit -F arch=b64 -S init_module -S delete_module -k modules
+
