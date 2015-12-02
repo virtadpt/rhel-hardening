@@ -28,10 +28,17 @@ yum install -y logwatch rsyslog tcp_wrappers
 # Install all the files.  All of them.
 cp -rv * /etc
 
-# Fix file permissions.
+# Fix file and directory permissions.
 chmod 0600 /etc/aide.conf
 chmod 0600 /boot/grub/grub.conf
 chmod 0750 /var/log/sudo-io
+chmod 0600 /etc/crontab
+chmod 0700 /etc/cron.d
+chmod 0700 /etc/cron.daily
+chmod 0700 /etc/cron.hourly
+chmod 0700 /etc/cron.monthly
+chmod 0700 /etc/cron.weekly
+chmod 0600 /etc/ssh/sshd_config
 
 # Just not this one.
 rm -f /etc/setup.sh
@@ -77,6 +84,11 @@ echo "" >> /etc/audit/audit.rules
 echo "# Making auditing configuration immutable." >> /etc/audit/audit.rules
 echo "-e 2" >> /etc/audit/audit.rules
 echo "" >> /etc/audit/audit.rules
+
+# Configure cron's access controls.
+rm -f /etc/cron.deny /etc/at.deny
+touch /etc/cron.allow /etc/at.allow
+chmod 0600 /etc/cron.allow /etc/at.allow
 
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
