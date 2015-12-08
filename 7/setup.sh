@@ -38,6 +38,8 @@ chmod 0700 /etc/cron.daily
 chmod 0700 /etc/cron.hourly
 chmod 0700 /etc/cron.monthly
 chmod 0700 /etc/cron.weekly
+chmod 0700 /etc/skel/.ssh
+chmod 0600 /etc/skel/.ssh/authorized_keys
 chmod 0600 /etc/ssh/sshd_config
 
 # Just not this one.
@@ -89,6 +91,30 @@ echo "" >> /etc/audit/audit.rules
 rm -f /etc/cron.deny /etc/at.deny
 touch /etc/cron.allow /etc/at.allow
 chmod 0600 /etc/cron.allow /etc/at.allow
+
+# Generate any SSH hostkeys that don't exist yet.
+ssh-keygen -A
+
+# Search for and re-set world-writable files.
+echo -n "Searching for and locking down world-writable files..."
+for i in `egrep '(ext?|xfs)' /etc/fstab | awk '{print $2}'`; do
+    find $i -xdev -type f -perm -0002 -exec chmod o-w {} \;
+done
+echo " done."
+
+# Search for and claim files that aren't owned by any existing users.
+echo -n "Searching for and claiming files that aren't owned by a user..."
+for i in `egrep '(ext?|xfs)' /etc/fstab | awk '{print $2}'`; do
+    find $i -xdev \( -type f -o -type d \) -nouser -exec chown root {} \;
+done
+echo " done."
+
+# Search for and claim files that aren't owned by any existing groups.
+echo -n "Searching for and claiming files that aren't owned by a group..."
+for i in `egrep '(ext?|xfs)' /etc/fstab | awk '{print $2}'`; do
+    find $i -xdev \( -type f -o -type d \) -nogroup -exec chown root {} \;
+done
+echo " done."
 
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
