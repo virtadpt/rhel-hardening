@@ -47,7 +47,12 @@ LogLevel INFO
 #LoginGraceTime 2m
 PermitRootLogin no
 #StrictModes yes
-MaxAuthTries 4
+
+# I had to crank this up because many SSH clients try every certificate they
+# have access to (especially if an SSH agent is in use) and if it's set too
+# low you won't be able to SSH in; if you don't have console access to the
+# server this will lock you out with no recourse.
+MaxAuthTries 10
 #MaxSessions 10
 
 #RSAAuthentication yes
