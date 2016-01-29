@@ -46,8 +46,8 @@ chmod 0600 /etc/ssh/sshd_config
 rm -f /etc/setup.sh
 
 # We have to explicitly start and enable new services.
-systemctl start haveeged
-systemctl enable haveeged
+systemctl start haveged
+systemctl enable haveged
 systemctl start ntpd
 systemctl enable ntpd
 systemctl start auditd 
@@ -118,7 +118,7 @@ echo " done."
 
 # Build the initial AIDE database.
 echo "Building initial AIDE database.  Please be patient, this takes a while."
-aide --init
+/usr/sbin/aide --init
 cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 
 # Fin.
